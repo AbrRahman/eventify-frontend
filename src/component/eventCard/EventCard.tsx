@@ -2,9 +2,10 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, MapPin, Music, Users, DollarSign, User } from "lucide-react";
+import { TEvent } from "@/types/events.types";
 
-const EventCard = () => {
-  const date = new Date("2025-12-01");
+const EventCard = ({ event }: { event: TEvent }) => {
+  const date = new Date(event?.date);
   const formatted = date.toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
@@ -23,13 +24,13 @@ const EventCard = () => {
           />
         </figure>
         <div className="card-body ">
-          <h2 className="card-title text-slate-300">Summer Music Festival</h2>
+          <h2 className="card-title text-slate-300">{event?.title}</h2>
           <p className="text-slate-400 tracking-wide leading-relaxed">
-            A vibrant outdoor music festival featuring popular bands and DJs.
+            {event?.description}
           </p>
           <div className="flex">
             <span className="text-lime-500 font-semibold px-3 py-1 rounded bg-slate-900">
-              Music
+              {event?.category}
             </span>
           </div>
           <div className="py-4 space-y-2">
@@ -41,15 +42,13 @@ const EventCard = () => {
               </div>
               <div className="flex gap-0.5 items-center">
                 <DollarSign className=" size-5 text-lime-500" />
-                <p className="text-slate-400 font-bold">{"100"}</p>
+                <p className="text-slate-400 font-bold">{event?.price}</p>
               </div>
             </div>
             {/* location */}
             <div className="flex gap-2.5 items-center">
               <MapPin className=" size-5 text-lime-500" />
-              <p className="text-slate-400 font-semibold">
-                {"Central Park, New York"}
-              </p>
+              <p className="text-slate-400 font-semibold">{event?.location}</p>
             </div>
           </div>
           <div className="card-actions justify-start">

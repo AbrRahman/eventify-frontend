@@ -1,9 +1,12 @@
 // import Link from "next/link";
 
-import Image from "next/image";
 import Link from "next/link";
 
 const Header = () => {
+  const menuItems = [
+    { name: "Home", path: "/" },
+    { name: "Events", path: "/events" },
+  ];
   return (
     <div className="bg-slate-900">
       <div className=" container mx-auto lg:px-8 py-1.5">
@@ -36,11 +39,16 @@ const Header = () => {
                 tabIndex={0}
                 className="menu menu-sm dropdown-content bg-slate-800 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
-                <li className="focus:bg-violet-500 hover:bg-violet-500 transition duration-300">
-                  <Link href="/" className="text-white">
-                    Item 1
-                  </Link>
-                </li>
+                {menuItems?.map((item, index) => (
+                  <li
+                    key={index}
+                    className="focus:bg-violet-500 hover:bg-violet-500 transition duration-300"
+                  >
+                    <Link href={item?.path} className="text-white">
+                      {item?.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <Link
@@ -53,14 +61,17 @@ const Header = () => {
           {/* menu items for large device */}
           <div className="navbar-end hidden lg:flex">
             <ul className="menu menu-horizontal lg:flex items-center px-1">
-              <li>
-                <Link
-                  className="text-white bg-lime-500 hover:bg-lime-400 tracking-wide font-semibold transition duration-300 mr-3.5"
-                  href="/home"
-                >
-                  Home
-                </Link>
-              </li>
+              {menuItems?.map((item, index) => (
+                <li key={index}>
+                  <Link
+                    className="text-white bg-lime-500 hover:bg-lime-400 tracking-wide font-semibold transition duration-300 mr-3.5"
+                    href={item?.path}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+
               <li className="dropdown dropdown-end">
                 <div
                   tabIndex={0}
