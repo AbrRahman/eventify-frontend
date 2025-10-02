@@ -7,6 +7,7 @@ const Header = () => {
     { name: "Home", path: "/" },
     { name: "Events", path: "/events" },
   ];
+  const user = false;
   return (
     <div className="bg-slate-900">
       <div className=" container mx-auto lg:px-8 py-1.5">
@@ -49,6 +50,20 @@ const Header = () => {
                     </Link>
                   </li>
                 ))}
+                {!user && (
+                  <>
+                    <li className="focus:bg-violet-500 hover:bg-violet-500 transition duration-300">
+                      <Link href="/signin" className="text-white">
+                        SignIn
+                      </Link>
+                    </li>
+                    <li className="focus:bg-violet-500 hover:bg-violet-500 transition duration-300">
+                      <Link href="/signup" className="text-white">
+                        SignUp
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
             <Link
@@ -64,14 +79,33 @@ const Header = () => {
               {menuItems?.map((item, index) => (
                 <li key={index}>
                   <Link
-                    className="text-white bg-lime-500 hover:bg-lime-400 tracking-wide font-semibold transition duration-300 mr-3.5"
+                    className="text-white  hover:bg-lime-600 tracking-wide font-semibold transition duration-300 mr-3.5"
                     href={item?.path}
                   >
                     {item.name}
                   </Link>
                 </li>
               ))}
-
+              {!user && (
+                <>
+                  <li>
+                    <Link
+                      className="text-white  hover:bg-lime-600 tracking-wide font-semibold transition duration-300 mr-3.5"
+                      href="/signin"
+                    >
+                      SignIn
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="text-white  hover:bg-lime-600 tracking-wide font-semibold transition duration-300 mr-3.5"
+                      href="/signup"
+                    >
+                      SignUp
+                    </Link>
+                  </li>
+                </>
+              )}
               <li className="dropdown dropdown-end">
                 <div
                   tabIndex={0}
