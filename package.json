@@ -12,6 +12,7 @@
     "@heroui/navbar": "^2.2.24",
     "@heroui/system": "^2.4.22",
     "@heroui/theme": "^2.4.22",
+    "lucide-react": "^0.544.0",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0"

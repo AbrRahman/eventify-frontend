@@ -52,7 +52,7 @@ const Header = () => {
           </div>
           {/* menu items for large device */}
           <div className="navbar-end hidden lg:flex">
-            <ul className="menu menu-horizontal px-1">
+            <ul className="menu menu-horizontal lg:flex items-center px-1">
               <li>
                 <Link
                   className="text-white bg-lime-500 hover:bg-lime-400 tracking-wide font-semibold transition duration-300 mr-3.5"
@@ -91,6 +91,7 @@ const Header = () => {
               </li>
             </ul>
           </div>
+
           {/* for mobile device profile */}
           <div className="navbar-end lg:hidden flex ">
             <div className="dropdown dropdown-end">
