@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Music,
   Cpu,
@@ -23,6 +22,7 @@ const Category = () => {
     { name: "Entertainment", Icon: Clapperboard, color: "#FFB703" },
     { name: "Environment", Icon: Leaf, color: "#2A9D8F" },
   ];
+
   return (
     <div className="bg-slate-900">
       <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
