@@ -4,6 +4,7 @@ import Header from "@/component/header/Header";
 import { Provider } from "react-redux";
 import { store, persistor } from "@/redux/features/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { Toaster } from "sonner";
 
 const Providers = ({ children }: { children: ReactNode }) => {
   return (
@@ -14,6 +15,16 @@ const Providers = ({ children }: { children: ReactNode }) => {
           {children}
         </PersistGate>
       </Provider>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: "#A3E635",
+            color: "#f0f9ff",
+            fontSize: "16px",
+          },
+        }}
+      />
     </>
   );
 };

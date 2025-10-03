@@ -21,7 +21,7 @@ const authApi = baseApi.injectEndpoints({
     }),
 
     // for google authentication data post
-    googleLogin: builder.mutation({
+    googleSingIn: builder.mutation({
       query: (payload) => ({
         url: "auth/google-login",
         method: "POST",
@@ -34,7 +34,7 @@ const authApi = baseApi.injectEndpoints({
 
     // get user profile
     getUserProfile: builder.query({
-      providesTags: ["profile"],
+      // providesTags: ["profile"],
       query: () => ({
         url: "auth/profile",
         method: "GET",
@@ -58,60 +58,38 @@ const authApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: payload,
       }),
-      invalidatesTags: ["profile"],
+      // invalidatesTags: ["profile"],
     }),
 
-    // get all user by admin
-    getAllUser: builder.query({
-      query: () => ({
-        url: "/user",
-        method: "GET",
-      }),
-      transformResponse: (data) => {
-        return data?.data;
-      },
-      providesTags: ["user"],
-    }),
-    // get single user
-    getSingleUser: builder.query({
-      query: (id) => ({
-        url: `/user/${id}`,
-        method: "GET",
-      }),
-      transformResponse: (data) => {
-        return data?.data;
-      },
-      providesTags: ["user"],
-    }),
+    // // get single user
+    // getSingleUser: builder.query({
+    //   query: (id) => ({
+    //     url: `/user/${id}`,
+    //     method: "GET",
+    //   }),
+    //   transformResponse: (data) => {
+    //     return data?.data;
+    //   },
+    //   // providesTags: ["user"],
+    // }),
     // update user profile
-    updateUser: builder.mutation({
-      query: ({ id, payload }) => ({
-        url: `/user/${id}`,
-        method: "PUT",
-        body: payload,
-      }),
-      invalidatesTags: ["user"],
-    }),
+    // updateUser: builder.mutation({
+    //   query: ({ id, payload }) => ({
+    //     url: `/user/${id}`,
+    //     method: "PUT",
+    //     body: payload,
+    //   }),
+    //   invalidatesTags: ["user"],
+    // }),
     // update user profile
-    deleteUser: builder.mutation({
-      query: (id) => ({
-        url: `/user/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["user"],
-    }),
   }),
 });
 
 export const {
   useCreateUserMutation,
-  useGoogleLoginMutation,
+  useGoogleSingInMutation,
   useLoginMutation,
   useGetUserProfileQuery,
   useUpdateProfileMutation,
   usePasswordChangeMutation,
-  useGetAllUserQuery,
-  useGetSingleUserQuery,
-  useUpdateUserMutation,
-  useDeleteUserMutation,
 } = authApi;
