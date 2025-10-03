@@ -1,6 +1,16 @@
-import React from "react";
+"use client";
+import BookingCancelModal from "@/component/booking/BookingCancelModal";
+import { useGetAllMyBookingQuery } from "@/redux/features/eventRegistration/eventBookingApi";
+import { TBooking } from "@/types/booking.type";
+import React, { useState } from "react";
 
-const page = () => {
+const MyBooking = () => {
+  const [isBookingCancelModalOpen, setIsBookingCancelModalOpen] =
+    useState(false);
+  const [deleteBookingId, setDeleteBookingId] = useState("");
+  const [updateEventId, setUpdateEventId] = useState("");
+
+  const { data: booking } = useGetAllMyBookingQuery(undefined);
   return (
     <div className="bg-slate-900 h-[80vh] overflow-y-auto">
       <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
@@ -22,30 +32,57 @@ const page = () => {
               </tr>
             </thead>
             <tbody>
-              {/* row 1 */}
-              <tr className="bg-slate-800 text-slate-200">
-                <th>Music Fest</th>
+              {booking?.map((bookingItem: TBooking) => (
+                <tr
+                  key={bookingItem?._id}
+                  className="bg-slate-800 text-slate-200"
+                >
+                  <th>{bookingItem?.event?.title}</th>
 
-                <td className="whitespace-nowrap">5 Not 2025</td>
-                <td>5</td>
-                <td>Unpaid</td>
-                <td>
-                  <div className="flex gap-3">
-                    <button className="text-white bg-amber-400 px-3 py-1 hover:bg-amber-500 cursor-pointer transition duration-300">
-                      Cancel
-                    </button>
-                    <button className="text-white whitespace-nowrap bg-violet-400 px-3 py-1 hover:bg-violet-500 cursor-pointer transition duration-300">
-                      Write a Review
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                  <td className="whitespace-nowrap">
+                    {bookingItem?.event?.date}
+                  </td>
+                  <td>{bookingItem?.event?.title}</td>
+                  <td>{bookingItem?.paymentStatus}</td>
+                  <td>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => {
+                          setIsBookingCancelModalOpen(true);
+                          setDeleteBookingId(bookingItem?._id);
+                        }}
+                        className="text-white bg-amber-400 px-3 py-1 hover:bg-amber-500 cursor-pointer transition duration-300"
+                      >
+                        Cancel
+                      </button>
+                      <button className="text-white whitespace-nowrap bg-violet-400 px-3 py-1 hover:bg-violet-500 cursor-pointer transition duration-300">
+                        Write a Review
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
+      {/* delete booking modal */}
+      <BookingCancelModal
+        isBookingCancelModalOpen={isBookingCancelModalOpen}
+        closeIsBookingCancelModal={() => setIsBookingCancelModalOpen(false)}
+        id={deleteBookingId}
+      />
+      isBookingCancelModalOpen, closeIsBookingCancelModal, id,
+      {/* edit event modal */}
+      {/* {isUpdateEventModalOpen && (
+        <UpdateEventModal
+          isUpdateModalOpen={isUpdateEventModalOpen}
+          closeUpdateModal={() => setIsUpdateEventModalOpen(false)}
+          id={updateEventId}
+        />
+      )} */}
     </div>
   );
 };
 
-export default page;
+export default MyBooking;

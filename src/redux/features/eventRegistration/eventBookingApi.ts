@@ -7,7 +7,7 @@ const eventBookingApi = baseApi.injectEndpoints({
       providesTags: ["booking"],
       query: () => {
         return {
-          url: "/booking",
+          url: "/booking/my-booking",
           method: "GET",
         };
       },
