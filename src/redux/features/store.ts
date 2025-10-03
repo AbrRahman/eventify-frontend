@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
+import eventReducer from "../features/event/eventSlice";
 
 import headerReducer from "../features/header/headerSlice";
 import {
@@ -26,6 +27,7 @@ export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     header: headerReducer,
+    event: eventReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
 

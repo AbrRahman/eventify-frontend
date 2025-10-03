@@ -1,3 +1,6 @@
+"use client";
+import { setSearchTerm } from "@/redux/features/event/eventSlice";
+import { useAppDispatch } from "@/redux/features/hooks";
 import {
   Music,
   Cpu,
@@ -9,6 +12,7 @@ import {
   Clapperboard,
   Leaf,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Category = () => {
   const categories = [
@@ -23,13 +27,27 @@ const Category = () => {
     { name: "Environment", Icon: Leaf, color: "#2A9D8F" },
   ];
 
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const handleCategoryAwacsEvent = (category: string) => {
+    dispatch(setSearchTerm(category));
+
+    // navigate event page
+    router.replace(`/events?from=home`);
+  };
+
   return (
     <div className="bg-slate-900">
       <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
         <h1 className="text-slate-200 text-2xl lg:text-3xl">Category</h1>
         <div className="flex flex-wrap mt-8 lg:mt-12 gap-3 lg:gap-4">
           {categories?.map(({ name, Icon, color }, index) => (
-            <div key={index} className="tooltip" data-tip={name}>
+            <div
+              onClick={() => handleCategoryAwacsEvent(name)}
+              key={index}
+              className="tooltip"
+              data-tip={name}
+            >
               <div
                 className="w-12 h-12 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-slate-200 cursor-pointer"
                 style={{ backgroundColor: color }}
