@@ -1,5 +1,6 @@
 "use client";
 import CreateEventModal from "@/component/eventManagement/CreateEventModal";
+import DeleteEventModal from "@/component/eventManagement/DeleteEventModal";
 import UpdateEventModal from "@/component/eventManagement/UpdateEventModal";
 import { useGetAllEventQuery } from "@/redux/features/event/eventApi";
 import { TEvent } from "@/types/events.types";
@@ -7,8 +8,7 @@ import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 const EventManagement = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isDeleteServiceModalOpen, setIsDeleteServiceModalOpen] =
-    useState(false);
+  const [isDeleteEventModalOpen, setIsDeleteEventModalOpen] = useState(false);
   const [isUpdateEventModalOpen, setIsUpdateEventModalOpen] = useState(false);
   const [deleteEventId, setDeleteEventId] = useState("");
   const [updateEventId, setUpdateEventId] = useState("");
@@ -66,7 +66,10 @@ const EventManagement = () => {
                         Update
                       </button>
                       <button
-                        onClick={() => setDeleteEventId(event?._id)}
+                        onClick={() => {
+                          setDeleteEventId(event?._id);
+                          setIsDeleteEventModalOpen(true);
+                        }}
                         className="text-white whitespace-nowrap bg-red-500 px-3 py-1 hover:bg-red-600 cursor-pointer transition duration-300"
                       >
                         Delete
@@ -84,12 +87,12 @@ const EventManagement = () => {
         isCreateModalOpen={isCreateModalOpen}
         closeCreateModal={() => setIsCreateModalOpen(false)}
       />
-      {/* delete service modal */}
-      {/* <DeleteServiceModal
-        isDeleteServiceModalOpen={isDeleteServiceModalOpen}
-        closeIsDeleteServiceModal={() => setIsDeleteServiceModalOpen(false)}
-        id={deleteServiceId}
-      /> */}
+      {/* delete Event modal */}
+      <DeleteEventModal
+        isDeleteEventModalOpen={isDeleteEventModalOpen}
+        closeIsDeleteEventModal={() => setIsDeleteEventModalOpen(false)}
+        id={deleteEventId}
+      />
 
       {/* edit event modal */}
       {isUpdateEventModalOpen && (

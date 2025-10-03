@@ -1,11 +1,12 @@
+import { TUser } from "@/types/signup.types";
 import { createSlice } from "@reduxjs/toolkit";
-import type { TUser } from "../../../types/auth.type";
 
 type TAuthInitialState = {
   user: TUser | null;
   token: string | null;
   image: string | null;
   googleUiu: string | null;
+  registerEventId: string;
 };
 
 const initialState: TAuthInitialState = {
@@ -13,6 +14,7 @@ const initialState: TAuthInitialState = {
   token: null,
   image: null,
   googleUiu: null,
+  registerEventId: "",
 };
 
 const authSlice = createSlice({
@@ -30,9 +32,12 @@ const authSlice = createSlice({
       state.token = null;
       state.googleUiu = null;
     },
+    setRegisterEventId: (state, actions) => {
+      state.registerEventId = actions.payload;
+    },
   },
 });
 
-export const { setUser, logOut } = authSlice.actions;
+export const { setUser, logOut, setRegisterEventId } = authSlice.actions;
 
 export default authSlice.reducer;

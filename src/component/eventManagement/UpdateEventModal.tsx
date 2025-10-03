@@ -195,7 +195,10 @@ const UpdateEventModal = ({
               >
                 Cancel
               </button>
-              <button className="bg-lime-600 text-base mt-1 hover:bg-lime-500 text-slate-200 tracking-wide transition duration-300 rounded cursor-pointer px-6 py-1.5">
+              <button
+                type="submit"
+                className="bg-lime-600 text-base mt-1 hover:bg-lime-500 text-slate-200 tracking-wide transition duration-300 rounded cursor-pointer px-6 py-1.5"
+              >
                 Save Changes
               </button>
             </div>

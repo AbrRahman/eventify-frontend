@@ -1,12 +1,26 @@
 "use client";
 import Image from "next/image";
 import { Calendar, MapPin, Users, DollarSign, User } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useGetSingleEventQuery } from "@/redux/features/event/eventApi";
+import { useAppDispatch, useAppSelector } from "@/redux/features/hooks";
+import { setRegisterEventId } from "@/redux/features/auth/authSlice";
 
 const EventDetails = () => {
   const { id } = useParams();
   const { data: event } = useGetSingleEventQuery(id);
+  const { user } = useAppSelector((state) => state?.auth);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  // handle booking registration
+  const handleBookingRegistration = () => {
+    if (!user) {
+      router.replace("/signin?from=event-registration");
+    } else {
+      dispatch(setRegisterEventId(id));
+      router.replace("/event-registration");
+    }
+  };
 
   const date = new Date(event?.date);
   const formatted = date.toLocaleDateString("en-GB", {
@@ -70,7 +84,10 @@ const EventDetails = () => {
                 </div>
               </div>
               <div className="mt-6">
-                <button className="bg-lime-500 hover:bg-lime-400 text-slate-200 tracking-wide text-xl transition duration-300 rounded cursor-pointer px-4 py-2">
+                <button
+                  onClick={handleBookingRegistration}
+                  className="bg-lime-500 hover:bg-lime-400 text-slate-200 tracking-wide text-xl transition duration-300 rounded cursor-pointer px-4 py-2"
+                >
                   Register Now
                 </button>
               </div>
