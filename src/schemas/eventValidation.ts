@@ -19,3 +19,25 @@ export const crateEventValidation = z.object({
       message: "Only .jpg, .png, and .webp formats are supported",
     }),
 });
+
+export const updateEventValidation = z.object({
+  title: z.string().trim().optional(),
+  category: z.string().trim().optional(),
+  description: z.string().trim().optional(),
+  date: z.string().trim().optional(),
+  location: z.string().optional(),
+  seats: z.string().optional(),
+  price: z.string().optional(),
+  organizer: z.string().optional(),
+  image: z
+    .instanceof(FileList)
+
+    .refine(
+      (files) =>
+        files.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files[0]?.type),
+      {
+        message: "Only .jpg, .png, and .webp formats are supported",
+      }
+    )
+    .optional(),
+});

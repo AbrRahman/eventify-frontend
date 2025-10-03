@@ -44,7 +44,7 @@ const eventApi = baseApi.injectEndpoints({
       },
     }),
     // update event
-    updateService: builder.mutation({
+    updateEvent: builder.mutation({
       query: ({ formData, id }) => ({
         url: `/event/${id}`,
         method: "PATCH",
@@ -55,8 +55,8 @@ const eventApi = baseApi.injectEndpoints({
         return data;
       },
     }),
-    // delete service by admin
-    deleteDelete: builder.mutation({
+    // delete event by admin
+    deleteEvent: builder.mutation({
       query: (id) => ({
         url: `/event/${id}`,
         method: "DELETE",
@@ -73,6 +73,6 @@ export const {
   useGetAllEventQuery,
   useGetSingleEventQuery,
   useCreateEventMutation,
-  useUpdateServiceMutation,
-  useDeleteDeleteMutation,
+  useUpdateEventMutation,
+  useDeleteEventMutation,
 } = eventApi;

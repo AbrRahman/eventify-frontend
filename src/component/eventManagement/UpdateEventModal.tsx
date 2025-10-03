@@ -1,34 +1,45 @@
-import { useCreateEventMutation } from "@/redux/features/event/eventApi";
-import { crateEventValidation } from "@/schemas/eventValidation";
+import {
+  useGetSingleEventQuery,
+  useUpdateEventMutation,
+} from "@/redux/features/event/eventApi";
+import { updateEventValidation } from "@/schemas/eventValidation";
 import { TEventInput } from "@/types/events.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
-type createModalProps = {
-  isCreateModalOpen: boolean;
-  closeCreateModal: () => void;
+type UpdateModalProps = {
+  isUpdateModalOpen: boolean;
+  closeUpdateModal: () => void;
+  id: string;
 };
 
-const CreateEventModal = ({
-  isCreateModalOpen,
-  closeCreateModal,
-}: createModalProps) => {
-  const [createEvent] = useCreateEventMutation();
-
+const UpdateEventModal = ({
+  isUpdateModalOpen,
+  closeUpdateModal,
+  id,
+}: UpdateModalProps) => {
+  const [updateEvent] = useUpdateEventMutation();
+  const { data: event } = useGetSingleEventQuery(id, {
+    refetchOnMountOrArgChange: true,
+  });
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<TEventInput>({ resolver: zodResolver(crateEventValidation) });
+  } = useForm<Partial<TEventInput>>({
+    resolver: zodResolver(updateEventValidation),
+  });
 
-  // handle create Event form
-  const handleCreateEventForm: SubmitHandler<TEventInput> = async (data) => {
+  // handle Update Event form
+  const handleUpdateEventForm: SubmitHandler<Partial<TEventInput>> = async (
+    data
+  ) => {
     // generate form data
     const formData = new FormData();
     for (const [key, value] of Object.entries(data)) {
-      if (key !== "image") {
+      if (value && key !== "image") {
         formData.append(key, value as string);
       }
     }
@@ -37,19 +48,18 @@ const CreateEventModal = ({
     Array.from(data.image ?? []).forEach((file) => {
       formData.append("file", file);
     });
-
     try {
-      const result = await createEvent(formData);
+      const result = await updateEvent({ formData, id });
       console.log(result);
       if (result && result?.data?.success) {
-        toast?.success("Event create successfully");
+        toast?.success("Event Update successfully");
       } else {
-        toast.error("Event create Failed");
+        toast.error("Event Update Failed");
       }
       reset();
-      closeCreateModal();
+      closeUpdateModal();
     } catch (err) {
-      toast.error("Event create Failed");
+      toast.error("Event Update Failed");
       console.log(err);
     }
   };
@@ -68,17 +78,18 @@ const CreateEventModal = ({
 
   return (
     <>
-      <div className={`modal ${isCreateModalOpen ? "modal-open" : ""} `}>
+      <div className={`modal ${isUpdateModalOpen ? "modal-open" : ""} `}>
         <div className="modal-box md:w-1/2 max-w-none bg-slate-800">
           <h3 className="font-bold text-lg text-sky-50">Upload a Event</h3>
           <form
-            onSubmit={handleSubmit(handleCreateEventForm)}
+            onSubmit={handleSubmit(handleUpdateEventForm)}
             className="space-y-4 lg:space-y-6 mt-8"
           >
             {/* text input */}
             <div className="space-y-4">
               <div>
                 <input
+                  defaultValue={event?.title}
                   type="text"
                   {...register("title")}
                   placeholder="Enter event name"
@@ -92,7 +103,7 @@ const CreateEventModal = ({
                   className="bg-slate-900 text-slate-400 px-2.5 py-1.5 w-full border-lime-500 border rounded"
                 >
                   <option selected value="">
-                    Select a service
+                    {event?.category}
                   </option>
 
                   {categories?.map((item) => (
@@ -106,6 +117,7 @@ const CreateEventModal = ({
               <div>
                 <input
                   type="text"
+                  defaultValue={event?.description}
                   {...register("description")}
                   placeholder="Enter event description"
                   className="bg-slate-900 text-slate-400 px-2.5 py-1.5 w-full border-lime-500 border rounded"
@@ -115,8 +127,9 @@ const CreateEventModal = ({
               <div>
                 <input
                   type="text"
+                  defaultValue={event?.date}
                   {...register("date")}
-                  placeholder="Enter event date eg. 2025-07-15"
+                  placeholder="Enter event date"
                   className="bg-slate-900 text-slate-400 px-2.5 py-1.5 w-full border-lime-500 border rounded"
                 />
                 <p className="text-red-400 ">{errors?.date?.message}</p>
@@ -124,6 +137,7 @@ const CreateEventModal = ({
               <div>
                 <input
                   type="text"
+                  defaultValue={event?.location}
                   {...register("location")}
                   placeholder="Enter event location"
                   className="bg-slate-900 text-slate-400 px-2.5 py-1.5 w-full border-lime-500 border rounded"
@@ -134,6 +148,7 @@ const CreateEventModal = ({
                 <input
                   type="text"
                   {...register("seats")}
+                  defaultValue={event?.seats}
                   placeholder="Enter number of seats"
                   className="bg-slate-900 text-slate-400 px-2.5 py-1.5 w-full border-lime-500 border rounded"
                 />
@@ -143,6 +158,7 @@ const CreateEventModal = ({
                 <input
                   type="text"
                   {...register("price")}
+                  defaultValue={event?.price}
                   placeholder="Enter event ticket price"
                   className="bg-slate-900 text-slate-400 px-2.5 py-1.5 w-full border-lime-500 border rounded"
                 />
@@ -152,6 +168,7 @@ const CreateEventModal = ({
                 <input
                   type="text"
                   {...register("organizer")}
+                  defaultValue={event?.organizer}
                   placeholder="Enter event organizer name"
                   className="bg-slate-900 text-slate-400 px-2.5 py-1.5 w-full border-lime-500 border rounded"
                 />
@@ -173,7 +190,7 @@ const CreateEventModal = ({
             <div className="flex justify-end gap-2 text-sky-50 mt-8">
               <button
                 type="button"
-                onClick={() => closeCreateModal()}
+                onClick={() => closeUpdateModal()}
                 className=" cursor-pointer hover:text-sky-200"
               >
                 Cancel
@@ -189,4 +206,4 @@ const CreateEventModal = ({
   );
 };
 
-export default CreateEventModal;
+export default UpdateEventModal;

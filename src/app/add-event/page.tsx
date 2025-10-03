@@ -1,5 +1,6 @@
 "use client";
 import CreateEventModal from "@/component/eventManagement/CreateEventModal";
+import UpdateEventModal from "@/component/eventManagement/UpdateEventModal";
 import { useGetAllEventQuery } from "@/redux/features/event/eventApi";
 import { TEvent } from "@/types/events.types";
 import React, { useState } from "react";
@@ -8,8 +9,7 @@ const EventManagement = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isDeleteServiceModalOpen, setIsDeleteServiceModalOpen] =
     useState(false);
-  const [isUpdateServiceModalOpen, setIsUpdateServiceModalOpen] =
-    useState(false);
+  const [isUpdateEventModalOpen, setIsUpdateEventModalOpen] = useState(false);
   const [deleteEventId, setDeleteEventId] = useState("");
   const [updateEventId, setUpdateEventId] = useState("");
 
@@ -57,14 +57,17 @@ const EventManagement = () => {
                   <td>
                     <div className="flex gap-3">
                       <button
-                        onClick={() => setUpdateEventId(event?._id)}
-                        className="text-white bg-amber-400 px-3 py-1 hover:bg-amber-500 cursor-pointer transition duration-300"
+                        onClick={() => {
+                          setUpdateEventId(event?._id);
+                          setIsUpdateEventModalOpen(true);
+                        }}
+                        className="text-white bg-violet-500 px-3 py-1 hover:bg-violet-600 cursor-pointer transition duration-300"
                       >
                         Update
                       </button>
                       <button
                         onClick={() => setDeleteEventId(event?._id)}
-                        className="text-white whitespace-nowrap bg-violet-500 px-3 py-1 hover:bg-violet-400 cursor-pointer transition duration-300"
+                        className="text-white whitespace-nowrap bg-red-500 px-3 py-1 hover:bg-red-600 cursor-pointer transition duration-300"
                       >
                         Delete
                       </button>
@@ -76,7 +79,7 @@ const EventManagement = () => {
           </table>
         </div>
       </div>
-      {/* service create modal */}
+      {/*  create event modal */}
       <CreateEventModal
         isCreateModalOpen={isCreateModalOpen}
         closeCreateModal={() => setIsCreateModalOpen(false)}
@@ -88,14 +91,14 @@ const EventManagement = () => {
         id={deleteServiceId}
       /> */}
 
-      {/* edit service modal */}
-      {/* {isUpdateServiceModalOpen && (
-        <UpdateServiceModal
-          isUpdateServiceModalOpen={isUpdateServiceModalOpen}
-          closeUpdateServiceModal={() => setIsUpdateServiceModalOpen(false)}
-          id={updateServiceId}
+      {/* edit event modal */}
+      {isUpdateEventModalOpen && (
+        <UpdateEventModal
+          isUpdateModalOpen={isUpdateEventModalOpen}
+          closeUpdateModal={() => setIsUpdateEventModalOpen(false)}
+          id={updateEventId}
         />
-      )} */}
+      )}
     </div>
   );
 };
