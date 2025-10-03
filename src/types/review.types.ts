@@ -1,6 +1,11 @@
-export type TReview = {
+type TUser = {
   name: string;
-  rating: number;
+  image: string;
+};
+export type TReview = {
+  _id: string;
   comment: string;
-  _id: number;
+  event: string;
+  rating: string;
+  user: TUser;
 };

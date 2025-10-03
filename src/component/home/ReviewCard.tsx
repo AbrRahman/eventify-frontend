@@ -1,5 +1,5 @@
 import { TReview } from "@/types/review.types";
-import { User } from "lucide-react";
+import Image from "next/image";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 type TRatingProps = {
   value: number;
@@ -32,9 +32,15 @@ const ReviewCard = ({ review }: { review: TReview }) => {
             : review?.comment}
         </p>
         <div className="flex gap-3 items-center">
-          <User className="w-10 h-10 rounded-full text-violet-500" />
+          <Image
+            src={review?.user?.image}
+            width={400}
+            height={400}
+            alt="User image"
+            className="w-10 h-10 rounded-full text-violet-500"
+          />
           <h1 className="text-slate-200 text-base font-bold mt-1">
-            {review?.name}
+            {review?.user?.name}
           </h1>
         </div>
       </div>

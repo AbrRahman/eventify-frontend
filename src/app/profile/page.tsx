@@ -1,8 +1,14 @@
+"use client";
+import { useGetUserProfileQuery } from "@/redux/features/auth/authApi";
+import { useAppSelector } from "@/redux/features/hooks";
 import Image from "next/image";
 
-const page = () => {
+const UserProfile = () => {
+  const { user } = useAppSelector((state) => state.auth);
+  const { data: profile } = useGetUserProfileQuery(undefined, { skip: !user });
+  console.log(profile);
   return (
-    <div className="bg-slate-900">
+    <div className="bg-slate-900 h-[87vh]">
       <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
         <div>
           <h1 className="text-slate-200 text-2xl lg:text-4xl text-center font-semibold tracking-wide pt-5">
@@ -11,15 +17,17 @@ const page = () => {
           <div className="w-30 h-30 mt-4 mx-auto">
             <Image
               className=" w-full rounded-full"
-              src="/images/user.png"
+              src={profile?.image}
               alt="user image"
               width={400}
               height={400}
             />
           </div>
           <div className="text-slate-400 text-center">
-            <h1 className="text-semibold my-1 text-xl lg:text-2xl">Jone Deo</h1>
-            <h1 className="text-semibold ">User</h1>
+            <h1 className="text-semibold my-1 text-xl lg:text-2xl">
+              {profile?.name}
+            </h1>
+            <h1 className="text-semibold ">{profile?.role}</h1>
             <button className="px-4 mt-1.5  text-white py-1 bg-lime-600 hover:bg-lime-500 transition duration-300 rounded cursor-pointer">
               Edit Profile
             </button>
@@ -30,10 +38,10 @@ const page = () => {
           </h1>
           <div>
             <h1 className="text-semibold text-slate-400 mb-0.5 text-center text-xl">
-              jondeo@gamil.com
+              {profile?.email}
             </h1>
             <h1 className="text-semibold text-slate-400 mb-0.5 text-center text-xl">
-              1234567891
+              {profile?.phone}
             </h1>
           </div>
         </div>
@@ -42,4 +50,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default UserProfile;
