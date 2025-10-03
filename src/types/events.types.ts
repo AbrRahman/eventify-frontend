@@ -10,3 +10,15 @@ export type TEvent = {
   image: string;
   organizer: string;
 };
+
+export type TEventInput = {
+  title: string;
+  category: string;
+  description: string;
+  date: string;
+  location: string;
+  seats: string;
+  price: string;
+  image: FileList;
+  organizer: string;
+};

@@ -1,6 +1,20 @@
-import React from "react";
+"use client";
+import CreateEventModal from "@/component/eventManagement/CreateEventModal";
+import { useGetAllEventQuery } from "@/redux/features/event/eventApi";
+import { TEvent } from "@/types/events.types";
+import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-const page = () => {
+const EventManagement = () => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isDeleteServiceModalOpen, setIsDeleteServiceModalOpen] =
+    useState(false);
+  const [isUpdateServiceModalOpen, setIsUpdateServiceModalOpen] =
+    useState(false);
+  const [deleteEventId, setDeleteEventId] = useState("");
+  const [updateEventId, setUpdateEventId] = useState("");
+
+  const { data: events } = useGetAllEventQuery(undefined);
+  console.log(events);
   return (
     <div className="bg-slate-900 h-[80vh] overflow-y-auto">
       <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
@@ -9,7 +23,10 @@ const page = () => {
           Event Management
         </h1>
         <div className="mt-4">
-          <button className="text-white bg-ca px-3 bg-lime-600 py-1 hover:bg-lime-500 cursor-pointer transition duration-300 flex items-center justify-center gap-3.5">
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="text-white bg-ca px-3 bg-lime-600 py-1 hover:bg-lime-500 cursor-pointer transition duration-300 flex items-center justify-center gap-3.5"
+          >
             <FaPlus className="size-4" />
             Add a Event
           </button>
@@ -20,38 +37,67 @@ const page = () => {
             <thead>
               <tr className="bg-slate-800 text-slate-200 border-b border-gray-400">
                 <th>Event Name</th>
-                <th>Event Date</th>
-                <th>Number of tickets</th>
-
-                <th>Payment status</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Organizer</th>
+                <th>Seats</th>
+                <th>Price</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {/* row 1 */}
-              <tr className="bg-slate-800 text-slate-200">
-                <th>Music Fest</th>
-
-                <td className="whitespace-nowrap">5 Not 2025</td>
-                <td>5</td>
-                <td>Unpaid</td>
-                <td>
-                  <div className="flex gap-3">
-                    <button className="text-white bg-amber-400 px-3 py-1 hover:bg-amber-500 cursor-pointer transition duration-300">
-                      Cancel
-                    </button>
-                    <button className="text-white whitespace-nowrap bg-violet-500 px-3 py-1 hover:bg-violet-400 cursor-pointer transition duration-300">
-                      Write a Review
-                    </button>
-                  </div>
-                </td>
-              </tr>
+              {events?.map((event: TEvent) => (
+                <tr key={event?._id} className="bg-slate-800 text-slate-200">
+                  <td className="">{event?.title}</td>
+                  <td className="">{event?.category}</td>
+                  <td className="">{event?.date}</td>
+                  <td className="">{event?.organizer}</td>
+                  <td className="">{event?.seats}</td>
+                  <td className="">{event?.price}</td>
+                  <td>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => setUpdateEventId(event?._id)}
+                        className="text-white bg-amber-400 px-3 py-1 hover:bg-amber-500 cursor-pointer transition duration-300"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => setDeleteEventId(event?._id)}
+                        className="text-white whitespace-nowrap bg-violet-500 px-3 py-1 hover:bg-violet-400 cursor-pointer transition duration-300"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
+      {/* service create modal */}
+      <CreateEventModal
+        isCreateModalOpen={isCreateModalOpen}
+        closeCreateModal={() => setIsCreateModalOpen(false)}
+      />
+      {/* delete service modal */}
+      {/* <DeleteServiceModal
+        isDeleteServiceModalOpen={isDeleteServiceModalOpen}
+        closeIsDeleteServiceModal={() => setIsDeleteServiceModalOpen(false)}
+        id={deleteServiceId}
+      /> */}
+
+      {/* edit service modal */}
+      {/* {isUpdateServiceModalOpen && (
+        <UpdateServiceModal
+          isUpdateServiceModalOpen={isUpdateServiceModalOpen}
+          closeUpdateServiceModal={() => setIsUpdateServiceModalOpen(false)}
+          id={updateServiceId}
+        />
+      )} */}
     </div>
   );
 };
 
-export default page;
+export default EventManagement;

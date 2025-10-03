@@ -1,19 +1,13 @@
+"use client";
 import Image from "next/image";
 import { Calendar, MapPin, Users, DollarSign, User } from "lucide-react";
-const page = () => {
-  const event = {
-    _id: "evt1",
-    title: "Summer Music Festival",
-    category: "Music",
-    date: "2025-07-15",
-    location: "Central Park, New York",
-    description:
-      "A vibrant outdoor music festival featuring popular bands and DJs.",
-    seats: 500,
-    price: 50,
-    image: "https://example.com/images/music-festival.jpg",
-    organizer: "NYC Music Group",
-  };
+import { useParams } from "next/navigation";
+import { useGetSingleEventQuery } from "@/redux/features/event/eventApi";
+
+const EventDetails = () => {
+  const { id } = useParams();
+  const { data: event } = useGetSingleEventQuery(id);
+
   const date = new Date(event?.date);
   const formatted = date.toLocaleDateString("en-GB", {
     day: "numeric",
@@ -99,4 +93,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default EventDetails;

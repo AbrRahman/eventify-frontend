@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, Music, Users, DollarSign, User } from "lucide-react";
+import { Calendar, MapPin, DollarSign } from "lucide-react";
 import { TEvent } from "@/types/events.types";
 
 const EventCard = ({ event }: { event: TEvent }) => {
@@ -54,7 +54,7 @@ const EventCard = ({ event }: { event: TEvent }) => {
           <div className="card-actions justify-start">
             <Link
               className="text-white px-4 py-1.5 bg-violet-500 tracking-wide rounded hover:bg-violet-600 transition"
-              href={`events/${"id"}`}
+              href={`events/${event?._id}`}
             >
               Details
             </Link>
