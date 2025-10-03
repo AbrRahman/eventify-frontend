@@ -6,21 +6,74 @@ import {
 import { setUser } from "@/redux/features/auth/authSlice";
 import { loginWithGoogle } from "@/redux/features/auth/firebase/authService";
 import { useAppDispatch } from "@/redux/features/hooks";
+import { TSignUpInput } from "@/types/signup.types";
 import { verifyToken } from "@/utils/verifyToken";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
 import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupFormValidation } from "@/schemas/signupFormValidation";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { TErrorResponse } from "@/types/error.type";
+import { useState } from "react";
 
 const SingUpPage = () => {
   const [googleSignIn] = useGoogleSingInMutation();
+  const [singUpUser] = useCreateUserMutation();
+  const [duplicateEmailError, setDuplicateEmailError] = useState("");
   const dispatch = useAppDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // redirect page
   const from = searchParams.get("from") || "/";
+
+  // react hookFrom
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<TSignUpInput>({
+    resolver: zodResolver(signupFormValidation),
+  });
+
+  // handle user signUp form
+  const handleUserSignup: SubmitHandler<TSignUpInput> = async (data) => {
+    // generate form data
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(data)) {
+      if (key !== "image") {
+        formData.append(key, value as string);
+      }
+    }
+
+    //  if user upload image file set image file from data
+    Array.from(data.image ?? []).forEach((file) => {
+      formData.append("file", file);
+    });
+
+    const result = await singUpUser(formData);
+
+    if (result?.data?.success) {
+      toast.success("SignUp successfully");
+      reset();
+      router.replace(from);
+    }
+
+    // handle backend error
+    if ("error" in result) {
+      const err = result?.error as FetchBaseQueryError & {
+        data: TErrorResponse;
+      };
+      if (err?.data?.error?.code == 11000) {
+        setDuplicateEmailError(err.data.errorSource?.[0]?.message);
+      }
+      toast.error("Register failed");
+    }
+  };
 
   // handle google authentication
   const handleGoogleSignIn = async () => {
@@ -58,52 +111,63 @@ const SingUpPage = () => {
         <div className="flex items-center pt-6">
           <div className="w-11/12 lg:w-1/2 mx-auto bg-slate-800 py-8 px-6 lg:py-10 lg:px-12  rounded shadow">
             <h1 className="text-slate-200 text-2xl lg:text-3xl">SignUp</h1>
-            <form className="mt-8">
+
+            {/* sign up form */}
+            <form onSubmit={handleSubmit(handleUserSignup)} className="mt-8">
               <div className="space-y-3.5">
                 {/* full name */}
                 <div>
                   <input
+                    {...register("name")}
                     type="text"
                     placeholder="Enter your name"
                     className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded-lg"
                   />
-                  {/* <p className="text-red-400 ">{"error"}</p> */}
+                  <p className="text-red-400 ">{errors?.name?.message}</p>
                 </div>
                 {/* email */}
                 <div>
                   <input
                     type="email"
+                    {...register("email")}
                     placeholder="Enter Your Email"
                     className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded-lg"
                   />
-                  {/* <p className="text-red-400 ">{"error"}</p> */}
+                  <p className="text-red-400 ">
+                    {errors?.email?.message
+                      ? errors?.email?.message
+                      : duplicateEmailError}
+                  </p>
                 </div>
                 {/* phone number */}
                 <div>
                   <input
                     type="text"
+                    {...register("phone")}
                     placeholder="Enter your phone"
                     className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded"
                   />
-                  {/* <p className="text-red-400 ">{"error"}</p> */}
+                  <p className="text-red-400 ">{errors?.phone?.message}</p>
                 </div>
                 {/* password */}
                 <div>
                   <input
                     type="password"
+                    {...register("password")}
                     placeholder="Enter your password"
                     className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded"
                   />
-                  {/* <p className="text-red-400 ">{"error"}</p> */}
+                  <p className="text-red-400 ">{errors?.password?.message}</p>
                 </div>
                 {/* image file */}
                 <div>
                   <input
                     type="file"
+                    {...register("image")}
                     placeholder="Select image"
                     className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded"
                   />
-                  {/* <p className="text-red-400 ">{"error"}</p> */}
+                  <p className="text-red-400 ">{errors?.image?.message}</p>
                 </div>
               </div>
               <div className="mt-4">
