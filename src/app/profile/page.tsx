@@ -1,12 +1,14 @@
 "use client";
+import EditProfileModal from "@/component/profile/EditProfileModal";
 import { useGetUserProfileQuery } from "@/redux/features/auth/authApi";
 import { useAppSelector } from "@/redux/features/hooks";
 import Image from "next/image";
+import { useState } from "react";
 
 const UserProfile = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const { data: profile } = useGetUserProfileQuery(undefined, { skip: !user });
-  console.log(profile);
   return (
     <div className="bg-slate-900 h-[87vh]">
       <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
@@ -28,7 +30,10 @@ const UserProfile = () => {
               {profile?.name}
             </h1>
             <h1 className="text-semibold ">{profile?.role}</h1>
-            <button className="px-4 mt-1.5  text-white py-1 bg-lime-600 hover:bg-lime-500 transition duration-300 rounded cursor-pointer">
+            <button
+              onClick={() => setIsEditProfileModalOpen(true)}
+              className="px-4 mt-1.5  text-white py-1 bg-lime-600 hover:bg-lime-500 transition duration-300 rounded cursor-pointer"
+            >
               Edit Profile
             </button>
           </div>
@@ -46,6 +51,14 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
+
+      {/* edit profile modal */}
+      {isEditProfileModalOpen && (
+        <EditProfileModal
+          isEditProfileModalOpen={isEditProfileModalOpen}
+          closeIsEditProfileModal={() => setIsEditProfileModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

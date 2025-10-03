@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
 import eventReducer from "../features/event/eventSlice";
-import eventRegistrationReducer from "../features/eventRegistration/eventRegistrationSlice";
 
 import headerReducer from "../features/header/headerSlice";
 import {
@@ -29,7 +28,6 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     header: headerReducer,
     event: eventReducer,
-    eventRegistration: eventRegistrationReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
 

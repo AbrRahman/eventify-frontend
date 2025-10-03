@@ -82,7 +82,7 @@ const MyBooking = () => {
           id={deleteBookingId}
         />
 
-        {/* edit event modal */}
+        {/* edit review modal */}
         {isReviewModalOpen && (
           <ReviewModal
             isReviewModalOpen={isReviewModalOpen}
