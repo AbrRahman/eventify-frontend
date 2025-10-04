@@ -23,7 +23,7 @@ const ReviewModal = ({
   const { user } = useAppSelector((state) => state.auth);
   const [rating, setRating] = useState(1.5);
 
-  const [submitReview] = useSubmitReviewMutation();
+  const [submitReview, { isLoading }] = useSubmitReviewMutation();
 
   const { register, handleSubmit, reset } = useForm<TReviewInput>();
 
@@ -162,7 +162,11 @@ const ReviewModal = ({
                 type="submit"
                 className="bg-lime-600 text-base mt-1 hover:bg-lime-500 text-slate-200 tracking-wide transition duration-300 rounded cursor-pointer px-6 py-1.5"
               >
-                Submit a Review
+                {isLoading ? (
+                  <span className="loading loading-spinner mx-14 loading-md"></span>
+                ) : (
+                  <span> Submit a Review</span>
+                )}
               </button>
             </div>
           </form>

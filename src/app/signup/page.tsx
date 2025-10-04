@@ -22,7 +22,7 @@ import PublicRoute from "@/PublicRoute/PublicRoute";
 
 const SingUpPage = () => {
   const [googleSignIn] = useGoogleSingInMutation();
-  const [singUpUser] = useCreateUserMutation();
+  const [singUpUser, { isLoading }] = useCreateUserMutation();
   const [duplicateEmailError, setDuplicateEmailError] = useState("");
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -180,7 +180,11 @@ const SingUpPage = () => {
                     </Link>
                   </p>
                   <button className="bg-lime-600 mt-1 hover:bg-lime-500 text-slate-200 tracking-wide text-lg transition duration-300 rounded cursor-pointer px-4 py-1.5">
-                    SignUP
+                    {isLoading ? (
+                      <span className="loading loading-spinner mx-5 loading-md"></span>
+                    ) : (
+                      <span>SignUp</span>
+                    )}
                   </button>
                 </div>
               </form>

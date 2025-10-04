@@ -14,7 +14,7 @@ const CreateEventModal = ({
   isCreateModalOpen,
   closeCreateModal,
 }: createModalProps) => {
-  const [createEvent] = useCreateEventMutation();
+  const [createEvent, { isLoading }] = useCreateEventMutation();
 
   const {
     register,
@@ -179,7 +179,11 @@ const CreateEventModal = ({
                 Cancel
               </button>
               <button className="bg-lime-600 text-base mt-1 hover:bg-lime-500 text-slate-200 tracking-wide transition duration-300 rounded cursor-pointer px-6 py-1.5">
-                Save Changes
+                {isLoading ? (
+                  <span className="loading loading-spinner mx-12 loading-md"></span>
+                ) : (
+                  <span>Save Changes</span>
+                )}
               </button>
             </div>
           </form>

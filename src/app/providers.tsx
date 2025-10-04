@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store, persistor } from "@/redux/features/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Toaster } from "sonner";
+import Footer from "@/component/footer/Footer";
 
 const Providers = ({ children }: { children: ReactNode }) => {
   return (
@@ -13,6 +14,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
         <PersistGate loading={null} persistor={persistor}>
           <Header />
           {children}
+          <Footer />
         </PersistGate>
       </Provider>
       <Toaster

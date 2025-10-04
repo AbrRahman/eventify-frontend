@@ -19,7 +19,7 @@ const UpdateEventModal = ({
   closeUpdateModal,
   id,
 }: UpdateModalProps) => {
-  const [updateEvent] = useUpdateEventMutation();
+  const [updateEvent, { isLoading }] = useUpdateEventMutation();
   const { data: event } = useGetSingleEventQuery(id, {
     refetchOnMountOrArgChange: true,
   });
@@ -199,7 +199,11 @@ const UpdateEventModal = ({
                 type="submit"
                 className="bg-lime-600 text-base mt-1 hover:bg-lime-500 text-slate-200 tracking-wide transition duration-300 rounded cursor-pointer px-6 py-1.5"
               >
-                Save Changes
+                {isLoading ? (
+                  <span className="loading loading-spinner mx-12 loading-md"></span>
+                ) : (
+                  <span> Save Changes</span>
+                )}
               </button>
             </div>
           </form>

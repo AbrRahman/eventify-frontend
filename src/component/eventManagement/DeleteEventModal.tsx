@@ -14,7 +14,7 @@ const DeleteEventModal = ({
   closeIsDeleteEventModal,
   id,
 }: deleteEventModalProps) => {
-  const [deleteEvent] = useDeleteEventMutation();
+  const [deleteEvent, { isLoading }] = useDeleteEventMutation();
 
   const handleDeleteEvent = async () => {
     try {
@@ -53,7 +53,11 @@ const DeleteEventModal = ({
               onClick={handleDeleteEvent}
               className="bg-lime-600 text-base mt-1 hover:bg-lime-500 text-slate-200 tracking-wide transition duration-300 rounded cursor-pointer px-6 py-1.5"
             >
-              Delete
+              {isLoading ? (
+                <span className="loading loading-spinner mx-7 loading-md"></span>
+              ) : (
+                <span>Delete</span>
+              )}
             </button>
           </div>
         </div>

@@ -17,7 +17,7 @@ type TRegisterInput = {
 
 const EventRegistration = () => {
   const { user, registerEventId } = useAppSelector((state) => state?.auth);
-  const [registerEvent] = useBookingEventMutation();
+  const [registerEvent, { isLoading }] = useBookingEventMutation();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const {
@@ -101,7 +101,11 @@ const EventRegistration = () => {
                   </div>
                 </div>
                 <button className="bg-lime-600 mt-8 hover:bg-lime-500 text-slate-200 tracking-wide text-lg transition duration-300 rounded cursor-pointer px-4 py-1.5">
-                  Booking Now
+                  {isLoading ? (
+                    <span className="loading loading-spinner mx-11 loading-md"></span>
+                  ) : (
+                    <span> Booking Now</span>
+                  )}
                 </button>
               </form>
             </div>

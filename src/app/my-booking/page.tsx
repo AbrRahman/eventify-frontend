@@ -13,11 +13,11 @@ const MyBooking = () => {
   const [deleteBookingId, setDeleteBookingId] = useState("");
   const [reviewEventId, setReviewEventId] = useState("");
 
-  const { data: booking } = useGetAllMyBookingQuery(undefined);
+  const { data: booking, isLoading } = useGetAllMyBookingQuery(undefined);
   return (
     <ProtectedRoute allowedRoles={["admin", "user"]}>
       <>
-        <div className="bg-slate-900 h-[80vh] overflow-y-auto">
+        <div className="bg-slate-900 h-[86vh] overflow-y-auto">
           <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
             {" "}
             <h1 className="text-slate-200 text-center pt-4 text-2xl lg:text-3xl">
@@ -76,6 +76,11 @@ const MyBooking = () => {
                 </tbody>
               </table>
             </div>
+            {!booking?.length && !isLoading && (
+              <div className="flex items-center justify-center mt-24">
+                <h1 className="text-white text-xl"> Your Booking is Empty</h1>
+              </div>
+            )}
           </div>
           {/* delete booking modal */}
           <BookingCancelModal

@@ -17,7 +17,7 @@ const EventManagement = () => {
   const { data: events } = useGetAllEventQuery(undefined);
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
-      <div className="bg-slate-900 h-[80vh] overflow-y-auto">
+      <div className="bg-slate-900 h-[86vh] overflow-y-auto">
         <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
           {" "}
           <h1 className="text-slate-200 text-center pt-4 text-2xl lg:text-3xl ">

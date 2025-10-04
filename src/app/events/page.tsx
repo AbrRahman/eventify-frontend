@@ -2,6 +2,7 @@
 import EventCard from "@/component/eventCard/EventCard";
 import { useGetAllEventQuery } from "@/redux/features/event/eventApi";
 import { setSearchTerm } from "@/redux/features/event/eventSlice";
+import { setActiveMenu } from "@/redux/features/header/headerSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/features/hooks";
 import { TEvent } from "@/types/events.types";
 import { useSearchParams } from "next/navigation";
@@ -19,6 +20,10 @@ const EventPage = () => {
       dispatch(setSearchTerm(""));
     }
   }, [from, dispatch]);
+
+  useEffect(() => {
+    dispatch(setActiveMenu("Events"));
+  }, [dispatch]);
 
   return (
     <div className="bg-slate-900">

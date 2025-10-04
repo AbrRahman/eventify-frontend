@@ -26,7 +26,7 @@ type TSignInput = {
 
 const SignInPage = () => {
   const [googleSignIn] = useGoogleSingInMutation();
-  const [SingInUser] = useSigninMutation();
+  const [SingInUser, { isLoading }] = useSigninMutation();
   const [unauthorizeErr, setUnAuthorizeErr] = useState("");
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -111,7 +111,7 @@ const SignInPage = () => {
         <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
           <div className="flex items-center pt-6">
             <div className="w-11/12 lg:w-1/2 mx-auto bg-slate-800 py-8 px-6 lg:py-10 lg:px-12  rounded shadow">
-              <h1 className="text-slate-200 text-2xl lg:text-3xl">SignUp</h1>
+              <h1 className="text-slate-200 text-2xl lg:text-3xl">SignIn</h1>
 
               {/* signUp Form */}
               <form onSubmit={handleSubmit(handleUserSignin)} className="mt-8">
@@ -142,15 +142,20 @@ const SignInPage = () => {
                   <p className="text-slate-400">
                     {" Don't have account?"}
                     <Link href="/signup" className="text-lime-500 underline">
-                      SignUP
+                      SignUp
                     </Link>
                   </p>
                   <button
                     type="submit"
                     className="bg-lime-600 mt-1 hover:bg-lime-500 text-slate-200 tracking-wide text-lg transition duration-300 rounded cursor-pointer px-4 py-1.5"
                   >
-                    SignUP
+                    {isLoading ? (
+                      <span className="loading loading-spinner mx-5 loading-md"></span>
+                    ) : (
+                      <span>SignIn</span>
+                    )}
                   </button>
+
                   <p className="text-red-400 mt-0.5">{unauthorizeErr}</p>
                 </div>
               </form>

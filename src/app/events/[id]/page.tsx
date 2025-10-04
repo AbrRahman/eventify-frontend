@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useGetSingleEventQuery } from "@/redux/features/event/eventApi";
 import { useAppDispatch, useAppSelector } from "@/redux/features/hooks";
 import { setRegisterEventId } from "@/redux/features/auth/authSlice";
+import { useEffect } from "react";
+import { setActiveMenu } from "@/redux/features/header/headerSlice";
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -28,6 +30,11 @@ const EventDetails = () => {
     month: "short",
     year: "numeric",
   });
+
+  useEffect(() => {
+    dispatch(setActiveMenu("Event Details"));
+  }, [dispatch]);
+
   return (
     <div className="bg-slate-900">
       <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">

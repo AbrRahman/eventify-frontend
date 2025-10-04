@@ -23,7 +23,7 @@ const EditProfileModal = ({
   closeIsEditProfileModal,
 }: EditProfileModalProps) => {
   const { data: profile } = useGetUserProfileQuery(undefined);
-  const [updateProfile] = useUpdateProfileMutation();
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const {
     register,
     handleSubmit,
@@ -121,9 +121,13 @@ const EditProfileModal = ({
               </button>
               <button
                 type="submit"
-                className="bg-lime-600 text-base mt-1 hover:bg-lime-500 text-slate-200 tracking-wide transition duration-300 rounded cursor-pointer px-6 py-1.5"
+                className="bg-lime-600 text-base mt-1 hover:bg-lime-500 text-slate-200 tracking-wide transition duration-300 rounded cursor-pointer px-3 py-1.5"
               >
-                Save Changes
+                {isLoading ? (
+                  <span className="loading loading-spinner mx-10 loading-md"></span>
+                ) : (
+                  <span> Save Changes</span>
+                )}
               </button>
             </div>
           </form>
