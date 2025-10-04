@@ -18,6 +18,7 @@ import { signupFormValidation } from "@/schemas/signupFormValidation";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { TErrorResponse } from "@/types/error.type";
 import { useState } from "react";
+import PublicRoute from "@/PublicRoute/PublicRoute";
 
 const SingUpPage = () => {
   const [googleSignIn] = useGoogleSingInMutation();
@@ -106,95 +107,97 @@ const SingUpPage = () => {
   };
 
   return (
-    <div className="bg-slate-900">
-      <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
-        <div className="flex items-center pt-6">
-          <div className="w-11/12 lg:w-1/2 mx-auto bg-slate-800 py-8 px-6 lg:py-10 lg:px-12  rounded shadow">
-            <h1 className="text-slate-200 text-2xl lg:text-3xl">SignUp</h1>
+    <PublicRoute>
+      <div className="bg-slate-900">
+        <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
+          <div className="flex items-center pt-6">
+            <div className="w-11/12 lg:w-1/2 mx-auto bg-slate-800 py-8 px-6 lg:py-10 lg:px-12  rounded shadow">
+              <h1 className="text-slate-200 text-2xl lg:text-3xl">SignUp</h1>
 
-            {/* sign up form */}
-            <form onSubmit={handleSubmit(handleUserSignup)} className="mt-8">
-              <div className="space-y-3.5">
-                {/* full name */}
-                <div>
-                  <input
-                    {...register("name")}
-                    type="text"
-                    placeholder="Enter your name"
-                    className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded-lg"
-                  />
-                  <p className="text-red-400 ">{errors?.name?.message}</p>
+              {/* sign up form */}
+              <form onSubmit={handleSubmit(handleUserSignup)} className="mt-8">
+                <div className="space-y-3.5">
+                  {/* full name */}
+                  <div>
+                    <input
+                      {...register("name")}
+                      type="text"
+                      placeholder="Enter your name"
+                      className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded-lg"
+                    />
+                    <p className="text-red-400 ">{errors?.name?.message}</p>
+                  </div>
+                  {/* email */}
+                  <div>
+                    <input
+                      type="email"
+                      {...register("email")}
+                      placeholder="Enter Your Email"
+                      className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded-lg"
+                    />
+                    <p className="text-red-400 ">
+                      {errors?.email?.message
+                        ? errors?.email?.message
+                        : duplicateEmailError}
+                    </p>
+                  </div>
+                  {/* phone number */}
+                  <div>
+                    <input
+                      type="text"
+                      {...register("phone")}
+                      placeholder="Enter your phone"
+                      className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded"
+                    />
+                    <p className="text-red-400 ">{errors?.phone?.message}</p>
+                  </div>
+                  {/* password */}
+                  <div>
+                    <input
+                      type="password"
+                      {...register("password")}
+                      placeholder="Enter your password"
+                      className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded"
+                    />
+                    <p className="text-red-400 ">{errors?.password?.message}</p>
+                  </div>
+                  {/* image file */}
+                  <div>
+                    <input
+                      type="file"
+                      {...register("image")}
+                      placeholder="Select image"
+                      className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded"
+                    />
+                    <p className="text-red-400 ">{errors?.image?.message}</p>
+                  </div>
                 </div>
-                {/* email */}
-                <div>
-                  <input
-                    type="email"
-                    {...register("email")}
-                    placeholder="Enter Your Email"
-                    className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded-lg"
-                  />
-                  <p className="text-red-400 ">
-                    {errors?.email?.message
-                      ? errors?.email?.message
-                      : duplicateEmailError}
+                <div className="mt-4">
+                  <p className="text-slate-400">
+                    Do have account?{" "}
+                    <Link href="/signin" className="text-lime-500 underline">
+                      SignIn
+                    </Link>
                   </p>
+                  <button className="bg-lime-600 mt-1 hover:bg-lime-500 text-slate-200 tracking-wide text-lg transition duration-300 rounded cursor-pointer px-4 py-1.5">
+                    SignUP
+                  </button>
                 </div>
-                {/* phone number */}
-                <div>
-                  <input
-                    type="text"
-                    {...register("phone")}
-                    placeholder="Enter your phone"
-                    className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded"
-                  />
-                  <p className="text-red-400 ">{errors?.phone?.message}</p>
-                </div>
-                {/* password */}
-                <div>
-                  <input
-                    type="password"
-                    {...register("password")}
-                    placeholder="Enter your password"
-                    className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded"
-                  />
-                  <p className="text-red-400 ">{errors?.password?.message}</p>
-                </div>
-                {/* image file */}
-                <div>
-                  <input
-                    type="file"
-                    {...register("image")}
-                    placeholder="Select image"
-                    className="bg-slate-900 text-slate-400 px-3 py-2 w-full border-lime-500 border rounded"
-                  />
-                  <p className="text-red-400 ">{errors?.image?.message}</p>
-                </div>
-              </div>
-              <div className="mt-4">
-                <p className="text-slate-400">
-                  Do have account?{" "}
-                  <Link href="/signin" className="text-lime-500 underline">
-                    SignIn
-                  </Link>
-                </p>
-                <button className="bg-lime-600 mt-1 hover:bg-lime-500 text-slate-200 tracking-wide text-lg transition duration-300 rounded cursor-pointer px-4 py-1.5">
-                  SignUP
-                </button>
-              </div>
-            </form>
-            <hr className="w-full text-slate-400 my-2" />
+              </form>
+              <hr className="w-full text-slate-400 my-2" />
 
-            <button
-              onClick={handleGoogleSignIn}
-              className="bg-lime-600 w-full mt-1 flex gap-2.5 justify-center items-center hover:bg-lime-500 text-slate-200 tracking-wide text-lg transition duration-300 rounded cursor-pointer px-4 py-1.5"
-            >
-              <FaGoogle size={20} />
-              <span>SignIn With Google</span>
-            </button>
+              <button
+                onClick={handleGoogleSignIn}
+                className="bg-lime-600 w-full mt-1 flex gap-2.5 justify-center items-center hover:bg-lime-500 text-slate-200 tracking-wide text-lg transition duration-300 rounded cursor-pointer px-4 py-1.5"
+              >
+                <FaGoogle size={20} />
+                <span>SignIn With Google</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </PublicRoute>
   );
 };
 

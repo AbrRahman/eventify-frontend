@@ -11,9 +11,11 @@ const RecentReviews = () => {
       <div className="container mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
         <h1 className="text-slate-200 text-2xl lg:text-3xl">Recent Reviews</h1>
         <div className="grid gap-3 grid-cols-1 lg:grid-cols-4 mt-8 lg:mt-12">
-          {reviews?.map((review: TReview) => (
-            <ReviewCard key={review?._id} review={review} />
-          ))}
+          {(reviews?.length > 8 ? reviews?.slice(0, 8) : reviews)?.map(
+            (review: TReview) => (
+              <ReviewCard key={review?._id} review={review} />
+            )
+          )}
         </div>
       </div>
     </div>
